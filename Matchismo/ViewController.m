@@ -23,7 +23,7 @@
 @end
 
 // Will show all card content during game - useful for testing game logic
-static const BOOL CARD_CONTENT_CHEAT = YES;
+static const BOOL CARD_CONTENT_CHEAT = NO;
 
 @implementation ViewController
 

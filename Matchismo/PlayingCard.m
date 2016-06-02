@@ -15,18 +15,20 @@
 {
     int score = 0;
     
-    if([otherCards count] == 1)
+    for(PlayingCard *otherCard in otherCards)
     {
-        PlayingCard *otherCard = [otherCards firstObject];
-        if([self.suit isEqualToString:otherCard.suit])
+        if(otherCard.rank == self.rank)
         {
-            score = 1;
-        } else if (self.rank == otherCard.rank){
-            score = 4;
-        }
+            score += 4;
+        } else if ([otherCard.suit isEqualToString:self.suit])
+            {
+                score += 1;
+            }
     }
     
     return score;
+    
+    // TODO Add logic to score points when 2 out of 3 cards match
 }
 
 - (NSString *)contents

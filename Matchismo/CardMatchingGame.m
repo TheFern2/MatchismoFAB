@@ -72,6 +72,7 @@ static const int COST_TO_CHOOSE = 1;
                 if(otherCard.isChosen && !otherCard.isMatched){
                     [currentChosenCards addObject:otherCard]; // Add otherCard of Card Obj to Array
                     LoggerApp(4, @"Card added to array");
+                    LoggerApp(4, @"maxMatchingCards %d", self.maxMatchingCards);
                 }
             }
             /* To implement 2 or 3 card matching, it is simply by putting

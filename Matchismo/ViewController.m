@@ -41,6 +41,7 @@ static const BOOL CARD_CONTENT_CHEAT = NO;
         _game = [[CardMatchingGame alloc] initWithCardCount:[self.cardButtons count]
                                                   usingDeck:[self createDeck]
                                                  usingCards:self.maxMatchingCards];
+        LoggerApp(4, @"maxMatchingCards View Controller %d", self.maxMatchingCards);
 
         [self changeModeSelector:self.modeSelector];
     }
@@ -51,6 +52,12 @@ static const BOOL CARD_CONTENT_CHEAT = NO;
 - (Deck *)createDeck
 {
     return [[PlayingCardDeck alloc] init];
+}
+
+- (NSInteger)maxMatchingCards
+{
+    if (!_maxMatchingCards) _maxMatchingCards = 2;
+    return _maxMatchingCards;
 }
 
 - (void)viewDidLoad

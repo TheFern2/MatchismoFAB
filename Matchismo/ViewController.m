@@ -18,7 +18,12 @@
 @property (nonatomic, strong) CardMatchingGame *game;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *modeSelector;
+@property (nonatomic) NSInteger maxMatchingCards;
 @end
+
+// Will show all card content during game - useful for testing game logic
+static const BOOL CARD_CONTENT_CHEAT = YES;
 
 @implementation ViewController
 
@@ -31,7 +36,14 @@
 
 - (CardMatchingGame *)game
 {
-    if(!_game) _game = [[CardMatchingGame alloc] initWithCardCount:[self.cardButtons count] usingDeck:[self createDeck]];
+    if(!_game){
+ 
+        _game = [[CardMatchingGame alloc] initWithCardCount:[self.cardButtons count]
+                                                  usingDeck:[self createDeck]
+                                                 usingCards:self.maxMatchingCards];
+
+        [self changeModeSelector:self.modeSelector];
+    }
     return _game;
     
 }
@@ -76,13 +88,23 @@
 
 - (NSString *)titleForCard:(Card *)card
 {
-    return card.isChosen ? card.contents : @"";
+    if (CARD_CONTENT_CHEAT) {
+        return card.contents;
+    } else {
+        return card.isChosen ? card.contents : @"";
+    }
 }
 
 - (UIImage *)backgroundImageForCard:(Card *)card
 {
     // If card is chosen put ? frontCard : otherwise backCard
-    return [UIImage imageNamed:card.isChosen ? @"frontCard" : @"backCard"];
+    // return [UIImage imageNamed:card.isChosen ? @"frontCard" : @"backCard"];
+    
+    if (CARD_CONTENT_CHEAT) {
+        return [UIImage imageNamed:@"frontCard"];
+    } else {
+        return [UIImage imageNamed:card.chosen ? @"frontCard" : @"backCard"];
+    }
 }
 
 
@@ -122,5 +144,12 @@
     [resetAlert addAction:cancelAction];
     [self presentViewController:resetAlert animated:YES completion:nil];
 }
+
+- (IBAction)changeModeSelector:(UISegmentedControl *)sender
+{
+    self.maxMatchingCards = [[sender titleForSegmentAtIndex:sender.selectedSegmentIndex] integerValue];
+    LoggerApp(4, @"maxMatchingCards value %d", self.maxMatchingCards);
+}
+
 
 @end

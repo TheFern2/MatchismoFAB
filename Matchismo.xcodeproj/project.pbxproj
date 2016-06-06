@@ -167,14 +167,14 @@
 			isa = PBXGroup;
 			children = (
 				048C1CEA1CF8C50800A50F79 /* Card.h */,
-				048C1CEB1CF8C50800A50F79 /* CardMatchingGame.h */,
-				048C1CEC1CF8C50800A50F79 /* Deck.h */,
-				048C1CED1CF8C50800A50F79 /* PlayingCard.h */,
-				048C1CEE1CF8C50800A50F79 /* PlayingCardDeck.h */,
 				048C1CEF1CF8C50800A50F79 /* Card.m */,
+				048C1CEB1CF8C50800A50F79 /* CardMatchingGame.h */,
 				048C1CF01CF8C50800A50F79 /* CardMatchingGame.m */,
+				048C1CEC1CF8C50800A50F79 /* Deck.h */,
 				048C1CF11CF8C50800A50F79 /* Deck.m */,
+				048C1CED1CF8C50800A50F79 /* PlayingCard.h */,
 				048C1CF21CF8C50800A50F79 /* PlayingCard.m */,
+				048C1CEE1CF8C50800A50F79 /* PlayingCardDeck.h */,
 				048C1CF31CF8C50800A50F79 /* PlayingCardDeck.m */,
 			);
 			name = Model;

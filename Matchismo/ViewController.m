@@ -20,10 +20,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *modeSelector;
 @property (nonatomic) NSInteger maxMatchingCards;
+@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @end
 
 // Will show all card content during game - useful for testing game logic
-static const BOOL CARD_CONTENT_CHEAT = NO;
+static const BOOL CARD_CONTENT_CHEAT = YES;
 
 @implementation ViewController
 
@@ -32,6 +33,7 @@ static const BOOL CARD_CONTENT_CHEAT = NO;
     self.game = nil;
     [self updateUI];
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", 0];
+    _modeSelector.enabled = true;
 }
 
 - (CardMatchingGame *)game
@@ -88,9 +90,12 @@ static const BOOL CARD_CONTENT_CHEAT = NO;
         [cardButton setBackgroundImage:[self backgroundImageForCard:card]
                               forState:UIControlStateNormal];
         cardButton.enabled = !card.isMatched;
+        _modeSelector.enabled = false;
     }
     
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d", self.game.score];
+    _modeSelector.enabled = false;
+    self.statusLabel.text = self.game.status;
 }
 
 - (NSString *)titleForCard:(Card *)card
@@ -155,6 +160,8 @@ static const BOOL CARD_CONTENT_CHEAT = NO;
 - (IBAction)changeModeSelector:(UISegmentedControl *)sender
 {
     self.maxMatchingCards = [[sender titleForSegmentAtIndex:sender.selectedSegmentIndex] integerValue];
+    
+    self.game.maxMatchingCards = self.maxMatchingCards;
     LoggerApp(4, @"maxMatchingCards value %d", self.maxMatchingCards);
 }
 

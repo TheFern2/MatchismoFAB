@@ -7,6 +7,7 @@
 //
 
 #import "PlayingCard.h"
+#import "NSLogger.h"
 
 @implementation PlayingCard
 @synthesize suit = _suit;
@@ -19,16 +20,43 @@
     {
         if(otherCard.rank == self.rank)
         {
-            score += 4;
+            score += 5;
+            LoggerApp(4, @"Adding 5");
+            
         } else if ([otherCard.suit isEqualToString:self.suit])
             {
-                score += 1;
+                score += 2;
+                LoggerApp(4, @"Adding 2");
             }
     }
     
-    return score;
+    // TODO Work on a better scoring system.
+    // The below makes sure that if the first card, doesn't match the next two
+    // Still results in matching points, when the next two matched.
+    // I.e. First card is 9 hearts, and next two are 4 diamonds, 3 diamonds.
+    // Also if only two matched, it results in less matching points.
     
-    // TODO Add logic to score points when 2 out of 3 cards match
+    NSMutableArray *otherCardsCollection = [otherCards mutableCopy];
+    
+    for(PlayingCard *otherCard in otherCards)
+    {
+        [otherCardsCollection removeObject:otherCard];
+        
+        for(PlayingCard *otherCardInOtherCardCollection in otherCardsCollection)
+        {
+            if(otherCard.rank == otherCardInOtherCardCollection.rank){
+                
+                score += 4;
+                LoggerApp(4, @"Adding 4");
+                
+            } else if([otherCard.suit isEqualToString:otherCardInOtherCardCollection.suit]){
+                score += 1;
+                LoggerApp(4, @"Adding 1");
+            }
+        }
+    }
+    
+    return score;
 }
 
 - (NSString *)contents

@@ -16,7 +16,6 @@ static const int COST_TO_CHOOSE = 1;
 @interface CardMatchingGame()
 @property (nonatomic, readwrite)NSInteger score;
 @property (nonatomic, strong)NSMutableArray *cards; // of Card
-@property (nonatomic) NSInteger maxMatchingCards;
 
 @end
 
@@ -63,10 +62,12 @@ static const int COST_TO_CHOOSE = 1;
     {
         if(card.isChosen){
             card.chosen = NO;
+            self.status = @"None selected";
         } else {
             // match against another card
             // Logic to match against two cards, goes below
             NSMutableArray *currentChosenCards = [[NSMutableArray alloc] init];
+            NSMutableString *statusCurrentChosenCards = [[NSMutableString alloc] init];
             LoggerApp(4, @"otherCards = %d, self.maxMatchingCards = %d", currentChosenCards.count, self.maxMatchingCards);
             for(Card *otherCard in self.cards){
                 if(otherCard.isChosen && !otherCard.isMatched){
@@ -75,6 +76,15 @@ static const int COST_TO_CHOOSE = 1;
                     LoggerApp(4, @"maxMatchingCards %d", self.maxMatchingCards);
                 }
             }
+            
+            // Status
+            
+            if ([currentChosenCards count]) {
+                self.status = [[NSString stringWithFormat:@"Chose %@ to match with: ", card.contents] stringByAppendingString:statusCurrentChosenCards];
+            } else {
+                self.status = [NSString stringWithFormat:@"Chose %@", card.contents];
+            }
+            
             /* To implement 2 or 3 card matching, it is simply by putting
              * maxMathincCards to 2 or 3, then that gets matched to the array
              * otherCards.count
@@ -96,7 +106,7 @@ static const int COST_TO_CHOOSE = 1;
                     }
                     
                     card.matched = YES;
-                    
+                    self.status = [[NSString stringWithFormat:@"Scored: %d. Match found for: %@ ", matchScore * MATCH_BONUS, card.contents] stringByAppendingString:statusCurrentChosenCards];
                 } else
                 {
                     self.score -= MISMATCH_PENALTY;
@@ -105,6 +115,7 @@ static const int COST_TO_CHOOSE = 1;
                         otherCard.chosen = NO;
                         LoggerApp(4, @"Card was not matched!");
                     }
+                    self.status = [[NSString stringWithFormat:@"Penalty: %d. No match found for: %@ ", MISMATCH_PENALTY, card.contents] stringByAppendingString:statusCurrentChosenCards];
 
                 }
 
@@ -114,6 +125,8 @@ static const int COST_TO_CHOOSE = 1;
             card.chosen = YES;
         }
     }
+    
+    // TODO Disable cards at the end that have no more matches
 
 }
 
